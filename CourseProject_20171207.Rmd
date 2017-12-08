@@ -1,0 +1,28 @@
+---
+title: "RegMod_CourseProject"
+author: "ACBLimehouse"
+date: "12/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Regression Models Course Project
+
+<b> Assignment for the course project: </b>
+You work for Motor Trend, a magazine about the automobile industry. Looking at a data set of a collection of cars, they are interested in exploring the relationship between a set of variables and miles per gallon (MPG) (outcome). They are particularly interested in the following two questions:
+
+“Is an automatic or manual transmission better for MPG”
+"Quantify the MPG difference between automatic and manual transmissions"
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(mtcars$mpg)
+summary(mtcars$disp)
+summary(mtcars$drat)
+summary(mtcars$qsec)
+```

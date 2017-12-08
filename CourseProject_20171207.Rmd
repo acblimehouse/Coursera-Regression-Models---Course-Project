@@ -1,28 +1,32 @@
 ---
-title: "RegMod_CourseProject"
-author: "ACBLimehouse"
 date: "12/7/2017"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
+knitr::opts_chunk$set(include = TRUE)
+carsdata <- mtcars
+library(tidyverse)
 ```
 
-## Regression Models Course Project
+# Regression Models Course Project
 
-<b> Assignment for the course project: </b>
-You work for Motor Trend, a magazine about the automobile industry. Looking at a data set of a collection of cars, they are interested in exploring the relationship between a set of variables and miles per gallon (MPG) (outcome). They are particularly interested in the following two questions:
+## Assignment for the course project
+You work for Motor Trend, a magazine about the automobile industry. Looking at a data set of a collection of cars, they are interested in exploring the relationship between a set of variables and miles per gallon (MPG) (outcome). They are particularly interested in the following two questions: <br>
+- “Is an automatic or manual transmission better for MPG”  
+- "Quantify the MPG difference between automatic and manual transmissions"  
 
-“Is an automatic or manual transmission better for MPG”
-"Quantify the MPG difference between automatic and manual transmissions"
+## Executive Summary
+The mtcars data set is a dataset included in R with 32 observations of 11 variables. These include MPG, Displacement, the vehicle's rear-axle ratio and 1/4 mile time. Using a simple linear regression that controls for size of engine (disp), size of car (drat), and relative acceleration (qsec), a manual transmission is usually better for a car's mileage than an automatic. On average, driving a vehicle with a manual transmission improves MPG by XXX.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(mtcars$mpg)
-summary(mtcars$disp)
-summary(mtcars$drat)
-summary(mtcars$qsec)
+## Descriptive Statistics
+```{r cars, echo=FALSE}
+print("Summary of 'mpg' or Miles per Gallon")
+summary(carsdata$mpg)
+print("Summary of 'disp' or Displacement(cu.in.) of engine")
+summary(carsdata$disp)
+print("Summary of 'drat' or the Rear-axle Ratio")
+summary(carsdata$drat)
+print("Summary of 'qsec' or the vehicle's 1/4 Mile Time")
+summary(carsdata$qsec)
 ```

@@ -1,12 +1,17 @@
 ---
-date: "12/7/2017"
-output: html_document
+date: "09/14/2020"
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(include = TRUE)
 carsdata <- mtcars
 library(tidyverse)
+library(magrittr)
+library(knitr)
+library(pander)
 ```
 
 # Regression Models Course Project
@@ -19,14 +24,47 @@ You work for Motor Trend, a magazine about the automobile industry. Looking at a
 ## Executive Summary
 The mtcars data set is a dataset included in R with 32 observations of 11 variables. These include MPG, Displacement, the vehicle's rear-axle ratio and 1/4 mile time. Using a simple linear regression that controls for size of engine (disp), size of car (drat), and relative acceleration (qsec), a manual transmission is usually better for a car's mileage than an automatic. On average, driving a vehicle with a manual transmission improves MPG by XXX.
 
-## Descriptive Statistics
-```{r cars, echo=FALSE}
-print("Summary of 'mpg' or Miles per Gallon")
-summary(carsdata$mpg)
-print("Summary of 'disp' or Displacement(cu.in.) of engine")
-summary(carsdata$disp)
-print("Summary of 'drat' or the Rear-axle Ratio")
-summary(carsdata$drat)
-print("Summary of 'qsec' or the vehicle's 1/4 Mile Time")
-summary(carsdata$qsec)
+## Descriptive Statistics  
+
+```{r DescripStat, echo=FALSE}
+"Summary of 'mpg' or Miles per Gallon"
+temp <- summary(carsdata$mpg, carsdata$am)
+pandoc.table(temp)
+"Summary of 'disp' or Displacement(cu.in.) of engine"
+temp <- summary(carsdata$disp)
+pandoc.table(temp)
+"Summary of 'drat' or the Rear-axle Ratio"
+temp <- summary(carsdata$drat)
+pandoc.table(temp)
+"Summary of 'qsec' or the vehicle's 1/4 Mile Time"
+temp <- summary(carsdata$qsec)
+pandoc.table(temp)
+```
+### Descriptive Summary  
+
+``` {r Plot 1 - MPG vs. Displacement, echo=FALSE}
+carsdata %>% ggplot(aes(y = mpg, x = disp)) + 
+             geom_line() + 
+             labs(y = "MPG", 
+                  x = "Engine Displacement (cu. in)", 
+                  title = "Figure 1. MPG vs. Engine Displacement")
+```
+
+## Regression Analysis
+```{r Specification 1 - Just Mileage, echo=FALSE}
+model1 <- carsdata %>% lm(formula = mpg ~ am)
+model2 <- carsdata %>% lm(formula = mpg ~ am + hp)
+model3 <- carsdata %>% lm(formula = mpg ~ am + hp + wt)
+model4 <- carsdata %>% lm(formula = mpg ~ am + wt + hp + drat)
+mymodels <- list('Univariate on Automatic vs. Manual' = model1, 
+                 'Bivariate on Automatic and Displacement' = model2, 
+                  'As above but adds vehicle weight' = model3, 
+                  'As above but adds Rear axle ratio' = model4)
+lapply(mymodels, summary)
+esti_func <- function(lm_model) {coef(summary(lm_model))["am", "Estimate"]}
+pval_func <- function(lm_model) {coef(summary(lm_model))["am", "Pr(>|t|)"]}
+am_estimates <- lapply(mymodels, esti_func)
+am_pval <- lapply(mymodels, pval_func)
+am_table <- map2_dfr(am_estimates, am_pval, ~ tibble(`Est.` = .x, `P.val` = .y))
+am_table
 ```
